@@ -577,6 +577,8 @@ condom(int argc, char **argv)
 	IGNORE_RC(pipe(c2p_waitpipe));
     }
 
+    setup_io(pty);
+
     pid = fork();
     if (pid < 0) {
 	perror("Couldn't fork");
@@ -584,6 +586,10 @@ condom(int argc, char **argv)
     }
 
     if (pid == 0) {
+#ifdef SIGWINCH
+	installHandler(SIGWINCH, SIG_DFL);
+#endif
+	installHandler(SIGCHLD, SIG_DFL);
 	close(pty);
 	if (pipe_option) {
 	    close_waitpipe(1);
@@ -661,7 +667,6 @@ parent(int pid GCC_UNUSED, int pty)
     if (verbose) {
 	reportIso2022(outputState);
     }
-    setup_io(pty);
 
     if (pipe_option) {
 	write_waitpipe(p2c_waitpipe);
