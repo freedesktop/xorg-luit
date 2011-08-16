@@ -40,8 +40,6 @@ AC_CANONICAL_HOST
 AC_CHECK_HEADERS([pty.h stropts.h sys/param.h sys/select.h])
 AC_CHECK_FUNCS([select grantpt])
 
-AC_CHECK_LIB(z, gzopen,, AC_MSG_ERROR([zlib not found]))
-
 AC_ARG_WITH(localealiasfile,
         AS_HELP_STRING([--with-localealiasfile=<path>],
                        [The locale alias file (default: ${datadir}/X11/locale/locale.alias)]),
