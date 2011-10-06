@@ -491,12 +491,7 @@ int
 droppriv(void)
 {
     int rc;
-#if (defined(BSD) && !defined(_POSIX_SAVED_IDS)) || defined(_MINIX)
-    rc = setuid(getuid());
-    if (rc >= 0) {
-	rc = setgid(getgid());
-    }
-#elif defined(_POSIX_SAVED_IDS)
+#if defined(_POSIX_SAVED_IDS)
     uid_t uid = getuid();
     uid_t euid = geteuid();
     gid_t gid = getgid();
@@ -509,6 +504,11 @@ droppriv(void)
 	rc = setuid(uid);
 	if (rc >= 0)
 	    rc = setgid(gid);
+    }
+#elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(_MINIX)
+    rc = setuid(getuid());
+    if (rc >= 0) {
+	rc = setgid(getgid());
     }
 #else
     uid_t uid = getuid();
