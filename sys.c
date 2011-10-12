@@ -335,7 +335,11 @@ allocatePty(int *pty_return, char **line_return)
 #if defined(HAVE_GRANTPT)
     int rc;
 
+#ifdef HAVE_POSIX_OPENPT
+    pty = posix_openpt(O_RDWR);
+#else
     pty = open("/dev/ptmx", O_RDWR);
+#endif
     if (pty < 0)
 	goto bsd;
 

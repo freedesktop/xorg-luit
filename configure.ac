@@ -38,7 +38,7 @@ AC_CANONICAL_HOST
 
 
 AC_CHECK_HEADERS([pty.h stropts.h sys/param.h sys/select.h])
-AC_CHECK_FUNCS([select grantpt])
+AC_CHECK_FUNCS([select grantpt posix_openpt])
 
 AC_ARG_WITH(localealiasfile,
         AS_HELP_STRING([--with-localealiasfile=<path>],
