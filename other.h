@@ -26,7 +26,11 @@ THE SOFTWARE.
 #include "config.h"		/* include this, for self-contained headers */
 
 #ifndef GCC_UNUSED
-#define GCC_UNUSED		/* ARGSUSED */
+# if defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 205)
+#  define GCC_UNUSED		__attribute__((__unused__))
+# else
+#  define GCC_UNUSED		/* ARGSUSED */
+# endif
 #endif
 
 #include <X11/fonts/fontenc.h>
