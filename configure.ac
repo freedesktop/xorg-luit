@@ -26,6 +26,7 @@ AC_INIT([luit], [1.1.1],
 	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [luit])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
+AC_USE_SYSTEM_EXTENSIONS
 
 # Initialize Automake
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
@@ -36,9 +37,6 @@ m4_ifndef([XORG_MACROS_VERSION],
           [m4_fatal([must install xorg-macros 1.8 or later before running autoconf/autogen])])
 XORG_MACROS_VERSION(1.8)
 XORG_DEFAULT_OPTIONS
-
-AC_CANONICAL_HOST
-
 
 AC_CHECK_HEADERS([pty.h stropts.h sys/param.h sys/select.h])
 AC_CHECK_FUNCS([select grantpt posix_openpt])
@@ -57,23 +55,16 @@ PKG_CHECK_MODULES(LUIT, fontenc)
 PKG_CHECK_EXISTS(x11, [],
 	[AC_MSG_WARN([libX11 not found.  luit may not be able to find locale aliases without it.])])
 
+AC_CANONICAL_HOST
 case $host_os in
     # darwin has poll() but can't be used to poll character devices (atleast through SnowLeopard)
     darwin*)
-        OS_CFLAGS=
-        ;;
-    linux*)
-        AC_CHECK_HEADERS([poll.h])
-        AC_CHECK_FUNCS([poll])
-        OS_CFLAGS="-D_XOPEN_SOURCE=500"
         ;;
     *)
         AC_CHECK_HEADERS([poll.h])
         AC_CHECK_FUNCS([poll])
-        OS_CFLAGS=
         ;;
 esac
-AC_SUBST(OS_CFLAGS)
 
 AC_CHECK_HEADERS([pty.h stropts.h sys/ioctl.h sys/param.h sys/poll.h sys/select.h sys/time.h termios.h]) 
 AC_CHECK_FUNCS([grantpt putenv select strdup])
