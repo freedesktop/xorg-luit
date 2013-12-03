@@ -34,7 +34,6 @@ luit_SOURCES =		\
         charset.h	\
         iso2022.c	\
         iso2022.h	\
-        locale.c	\
         luit.c		\
         luit.h		\
         other.c		\
