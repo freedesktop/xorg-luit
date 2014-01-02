@@ -356,7 +356,7 @@ getOtherCharset(const char *name)
     c->other_aux = s;
 
     if (!fc->init(s)) {
-	c->type = T_FAILED;
+	free(c);
 	return NULL;
     }
 
